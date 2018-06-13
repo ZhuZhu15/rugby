@@ -180,9 +180,21 @@ class SiteController extends Controller
 
     public function actionAbout()
     {
+        
         $about = new AboutModel();
+        $about->load(Yii::$app->request->post());
         $c = $about->Sum(15,25);
-        return $this->render('about', ['d' => $c,
+        if (Yii::$app->request->post()) {
+        $minus = $about->Minus();
+        Yii::$app->db->createCommand()->insert('dd', [
+            'chislo' => $minus,
+            ])->execute(); 
+        }
+        else {
+            $minus = "";
+        }       
+
+        return $this->render('about', ['c' => $c, 'minus' => $minus, 'about' => $about,
     ]);
     }
 
